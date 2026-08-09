@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin CMS Dashboard - Portal RT 03</title>
+    <title>Admin Dashboard - Portal RT 03</title>
     <link rel="shortcut icon" href="img/logo/logo3.png" type="image/x-icon" />
 
     <!-- Google Fonts -->
@@ -21,203 +21,233 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/admin.css" />
   </head>
-  <body style="padding-top: 5rem;">
-    <!-- Navbar Start -->
-    <nav class="navbar">
-      <a href="index.html" class="navbar-logo">
-        <i data-feather="grid" style="color: var(--primary);"></i> Admin <span>CMS RT 03</span>
-      </a>
-
-      <div class="navbar-extra">
-        <a href="index.html" class="btn-secondary" style="font-size:0.9rem; padding:0.4rem 1rem;">
-          <i data-feather="arrow-left"></i> Kembali ke Website
-        </a>
+  <body>
+    <!-- Modal Lock Login Admin -->
+    <div id="login-modal" class="login-overlay">
+      <div class="login-card glass-card">
+        <div style="width:60px; height:60px; border-radius:50%; background:rgba(233,15,15,0.2); color:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:1.5rem;">
+          <i data-feather="lock"></i>
+        </div>
+        <h2 style="color:#fff; margin-bottom:0.4rem;">Login Khusus Admin</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">Masukkan PIN / Password Pengurus RT 03</p>
+        
+        <form onsubmit="handleLoginSubmit(event)">
+          <div class="form-group">
+            <input type="password" id="admin-pass" class="form-control" placeholder="Password Admin (Default: rt03admin)" required style="text-align:center; font-size:1.1rem; letter-spacing:2px;" />
+          </div>
+          <p id="login-error" style="color:#ff4d4d; font-size:0.85rem; display:none; margin-bottom:1rem;">Password salah! Silakan coba lagi.</p>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+            <i data-feather="log-in"></i> Masuk Dashboard
+          </button>
+        </form>
+        <div style="margin-top:1.5rem;">
+          <a href="index.html" style="color:var(--text-muted); font-size:0.85rem;"><i data-feather="arrow-left" style="width:14px;"></i> Kembali ke Website Portal</a>
+        </div>
       </div>
-    </nav>
-    <!-- Navbar End -->
+    </div>
 
-    <!-- Main Container -->
-    <div style="padding: 2rem 7%;">
-      <div class="admin-header">
+    <!-- Admin App Wrapper -->
+    <div class="admin-wrapper">
+      <!-- Sidebar Left Nav -->
+      <aside class="admin-sidebar">
         <div>
-          <h1 style="font-size:2.2rem; color:#fff;">Dashboard Pengelola CMS</h1>
-          <p style="color:var(--text-muted);">Tambah & Kelola Pengumuman, Kegiatan Warga, Pengurus RT, serta Dokumentasi RT 03</p>
+          <div class="brand">
+            <i data-feather="grid" style="color: var(--primary);"></i> <span>Admin CMS</span>
+          </div>
+
+          <nav class="menu-list">
+            <button class="menu-item active" onclick="switchTab('tab-announcements', this)">
+              <i data-feather="bell"></i> <span>Pengumuman</span>
+            </button>
+            <button class="menu-item" onclick="switchTab('tab-events', this)">
+              <i data-feather="calendar"></i> <span>Kegiatan Warga</span>
+            </button>
+            <button class="menu-item" onclick="switchTab('tab-pengurus', this)">
+              <i data-feather="users"></i> <span>Pengurus RT</span>
+            </button>
+          </nav>
         </div>
-        <button onclick="handleResetData()" class="btn-secondary" style="border-color: rgba(233,15,15,0.4); color: var(--primary);">
-          <i data-feather="refresh-cw"></i> Reset ke Data Default
-        </button>
-      </div>
 
-      <!-- Navigation Tabs -->
-      <div class="admin-nav-tabs">
-        <button class="admin-tab-btn active" onclick="switchTab('tab-announcements')">
-          <i data-feather="bell"></i> Kelola Pengumuman
-        </button>
-        <button class="admin-tab-btn" onclick="switchTab('tab-events')">
-          <i data-feather="calendar"></i> Kelola Kegiatan / Events
-        </button>
-        <button class="admin-tab-btn" onclick="switchTab('tab-pengurus')">
-          <i data-feather="users"></i> Kelola Pengurus RT
-        </button>
-      </div>
-
-      <!-- Tab 1: Pengumuman -->
-      <div id="tab-announcements" class="admin-tab-content active">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
-          <!-- Form Tambah Pengumuman -->
-          <div class="glass-card" style="padding: 1.8rem;">
-            <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Pengumuman</h3>
-            <form id="form-announcement" onsubmit="handleAddAnnouncement(event)">
-              <div class="form-group">
-                <label>Judul Pengumuman</label>
-                <input type="text" id="ann-title" class="form-control" placeholder="Contoh: Kerja Bakti RT" required />
-              </div>
-              <div class="form-group">
-                <label>Kategori</label>
-                <select id="ann-category" class="form-control">
-                  <option value="Kegiatan">Kegiatan Warga</option>
-                  <option value="Kesehatan">Kesehatan / Posyandu</option>
-                  <option value="Keuangan">Kas / Keuangan</option>
-                  <option value="Informasi">Informasi Umum</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Status Badge</label>
-                <select id="ann-badge" class="form-control">
-                  <option value="Penting">Penting (Merah)</option>
-                  <option value="Rutin">Rutin (Emas)</option>
-                  <option value="Info">Info (Biru)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Isi Pengumuman</label>
-                <textarea id="ann-content" class="form-control" placeholder="Tulis rincian pengumuman untuk warga..." required></textarea>
-              </div>
-              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-                <i data-feather="save"></i> Publikasikan Pengumuman
-              </button>
-            </form>
-          </div>
-
-          <!-- Table List Pengumuman -->
-          <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
-            <h3 style="margin-bottom: 1.2rem;"><i data-feather="list"></i> Daftar Pengumuman Aktif</h3>
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Judul</th>
-                  <th>Kategori</th>
-                  <th>Badge</th>
-                  <th>Tanggal</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="table-announcements-body">
-                <!-- Rendered dynamically -->
-              </tbody>
-            </table>
-          </div>
+        <div>
+          <a href="index.html" class="menu-item" style="color: var(--text-muted);">
+            <i data-feather="globe"></i> <span>Lihat Website</span>
+          </a>
+          <button onclick="handleLogout()" class="menu-item" style="color: var(--primary);">
+            <i data-feather="log-out"></i> <span>Keluar / Logout</span>
+          </button>
         </div>
-      </div>
+      </aside>
 
-      <!-- Tab 2: Events / Kegiatan -->
-      <div id="tab-events" class="admin-tab-content">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
-          <!-- Form Tambah Event -->
-          <div class="glass-card" style="padding: 1.8rem;">
-            <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Kegiatan / Event</h3>
-            <form id="form-event" onsubmit="handleAddEvent(event)">
-              <div class="form-group">
-                <label>Nama Kegiatan</label>
-                <input type="text" id="ev-title" class="form-control" placeholder="Contoh: Turnamen Bulutangkis RT" required />
-              </div>
-              <div class="form-group">
-                <label>Waktu / Tanggal Pelaksanaan</label>
-                <input type="text" id="ev-date" class="form-control" placeholder="Contoh: 25 Agustus 2026" required />
-              </div>
-              <div class="form-group">
-                <label>Kategori & Badge</label>
-                <select id="ev-badge" class="form-control">
-                  <option value="Event Utama">Event Utama (Highlight)</option>
-                  <option value="Rutin">Kegiatan Rutin</option>
-                  <option value="Olahraga">Olahraga & Seni</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Deskripsi Singkat</label>
-                <textarea id="ev-description" class="form-control" placeholder="Penjelasan singkat mengenai event ini..." required></textarea>
-              </div>
-              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-                <i data-feather="save"></i> Simpan Kegiatan
-              </button>
-            </form>
+      <!-- Main Workspace -->
+      <main class="admin-main-content">
+        <div class="admin-topbar">
+          <div>
+            <h1 style="font-size:2rem; color:#fff;">Dashboard Pengelola RT 03</h1>
+            <p style="color:var(--text-muted); font-size:0.9rem;">Kelola konten publikasi portal warga secara aman</p>
           </div>
 
-          <!-- Table List Events -->
-          <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
-            <h3 style="margin-bottom: 1.2rem;"><i data-feather="list"></i> Daftar Kegiatan Warga</h3>
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Kegiatan</th>
-                  <th>Tanggal</th>
-                  <th>Status</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="table-events-body">
-                <!-- Rendered dynamically -->
-              </tbody>
-            </table>
+          <button onclick="handleResetData()" class="btn-secondary" style="border-color: rgba(233,15,15,0.4); color: var(--primary); font-size:0.85rem;">
+            <i data-feather="refresh-cw"></i> Reset Data
+          </button>
+        </div>
+
+        <!-- Tab 1: Pengumuman -->
+        <div id="tab-announcements" class="admin-tab-content active">
+          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+            <!-- Form Tambah Pengumuman -->
+            <div class="glass-card" style="padding: 1.8rem;">
+              <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Pengumuman</h3>
+              <form id="form-announcement" onsubmit="handleAddAnnouncement(event)">
+                <div class="form-group">
+                  <label>Judul Pengumuman</label>
+                  <input type="text" id="ann-title" class="form-control" placeholder="Contoh: Kerja Bakti RT" required />
+                </div>
+                <div class="form-group">
+                  <label>Kategori</label>
+                  <select id="ann-category" class="form-control">
+                    <option value="Kegiatan">Kegiatan Warga</option>
+                    <option value="Kesehatan">Kesehatan / Posyandu</option>
+                    <option value="Keuangan">Kas / Keuangan</option>
+                    <option value="Informasi">Informasi Umum</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Status Badge</label>
+                  <select id="ann-badge" class="form-control">
+                    <option value="Penting">Penting (Merah)</option>
+                    <option value="Rutin">Rutin (Emas)</option>
+                    <option value="Info">Info (Biru)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Isi Pengumuman</label>
+                  <textarea id="ann-content" class="form-control" placeholder="Tulis rincian pengumuman untuk warga..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                  <i data-feather="save"></i> Publikasikan Pengumuman
+                </button>
+              </form>
+            </div>
+
+            <!-- Table List Pengumuman -->
+            <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
+              <h3 style="margin-bottom: 1.2rem;"><i data-feather="list"></i> Daftar Pengumuman Aktif</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Judul</th>
+                    <th>Kategori</th>
+                    <th>Badge</th>
+                    <th>Tanggal</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-announcements-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- Tab 3: Pengurus RT -->
-      <div id="tab-pengurus" class="admin-tab-content">
-        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
-          <!-- Form Tambah / Edit Pengurus -->
-          <div class="glass-card" style="padding: 1.8rem;">
-            <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="user-plus"></i> Tambah Pengurus RT</h3>
-            <form id="form-pengurus" onsubmit="handleAddPengurus(event)">
-              <div class="form-group">
-                <label>Nama Lengkap</label>
-                <input type="text" id="peng-name" class="form-control" placeholder="Contoh: H. Ahmad Subagyo" required />
-              </div>
-              <div class="form-group">
-                <label>Jabatan / Role</label>
-                <input type="text" id="peng-role" class="form-control" placeholder="Contoh: Ketua RT 03 / Bendahara" required />
-              </div>
-              <div class="form-group">
-                <label>No. Telepon / WhatsApp</label>
-                <input type="text" id="peng-phone" class="form-control" placeholder="Contoh: +62 812-3456-7890" required />
-              </div>
-              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-                <i data-feather="save"></i> Simpan Data Pengurus
-              </button>
-            </form>
-          </div>
+        <!-- Tab 2: Events / Kegiatan -->
+        <div id="tab-events" class="admin-tab-content">
+          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+            <!-- Form Tambah Event -->
+            <div class="glass-card" style="padding: 1.8rem;">
+              <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Kegiatan / Event</h3>
+              <form id="form-event" onsubmit="handleAddEvent(event)">
+                <div class="form-group">
+                  <label>Nama Kegiatan</label>
+                  <input type="text" id="ev-title" class="form-control" placeholder="Contoh: Turnamen Bulutangkis RT" required />
+                </div>
+                <div class="form-group">
+                  <label>Waktu / Tanggal Pelaksanaan</label>
+                  <input type="text" id="ev-date" class="form-control" placeholder="Contoh: 25 Agustus 2026" required />
+                </div>
+                <div class="form-group">
+                  <label>Kategori & Badge</label>
+                  <select id="ev-badge" class="form-control">
+                    <option value="Event Utama">Event Utama (Highlight)</option>
+                    <option value="Rutin">Kegiatan Rutin</option>
+                    <option value="Olahraga">Olahraga & Seni</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Deskripsi Singkat</label>
+                  <textarea id="ev-description" class="form-control" placeholder="Penjelasan singkat mengenai event ini..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                  <i data-feather="save"></i> Simpan Kegiatan
+                </button>
+              </form>
+            </div>
 
-          <!-- Table List Pengurus -->
-          <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
-            <h3 style="margin-bottom: 1.2rem;"><i data-feather="users"></i> Data Pengurus RT 03</h3>
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Nama Pengurus</th>
-                  <th>Jabatan / Role</th>
-                  <th>No. Telepon</th>
-                  <th>Aksi</th>
-                </tr>
-              </thead>
-              <tbody id="table-pengurus-body">
-                <!-- Rendered dynamically -->
-              </tbody>
-            </table>
+            <!-- Table List Events -->
+            <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
+              <h3 style="margin-bottom: 1.2rem;"><i data-feather="list"></i> Daftar Kegiatan Warga</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Kegiatan</th>
+                    <th>Tanggal</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-events-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
-      </div>
 
+        <!-- Tab 3: Pengurus RT -->
+        <div id="tab-pengurus" class="admin-tab-content">
+          <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+            <!-- Form Tambah Pengurus -->
+            <div class="glass-card" style="padding: 1.8rem;">
+              <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="user-plus"></i> Tambah Pengurus RT</h3>
+              <form id="form-pengurus" onsubmit="handleAddPengurus(event)">
+                <div class="form-group">
+                  <label>Nama Lengkap</label>
+                  <input type="text" id="peng-name" class="form-control" placeholder="Contoh: H. Ahmad Subagyo" required />
+                </div>
+                <div class="form-group">
+                  <label>Jabatan / Role</label>
+                  <input type="text" id="peng-role" class="form-control" placeholder="Contoh: Ketua RT 03 / Bendahara" required />
+                </div>
+                <div class="form-group">
+                  <label>No. Telepon / WhatsApp</label>
+                  <input type="text" id="peng-phone" class="form-control" placeholder="Contoh: +62 812-3456-7890" required />
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                  <i data-feather="save"></i> Simpan Data Pengurus
+                </button>
+              </form>
+            </div>
+
+            <!-- Table List Pengurus -->
+            <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
+              <h3 style="margin-bottom: 1.2rem;"><i data-feather="users"></i> Data Pengurus RT 03</h3>
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Nama Pengurus</th>
+                    <th>Jabatan / Role</th>
+                    <th>No. Telepon</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="table-pengurus-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
     </div>
 
     <!-- Modal Edit Pengurus -->

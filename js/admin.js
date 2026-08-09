@@ -1,15 +1,47 @@
-// Admin CMS Dashboard Logic
+// Admin CMS Dashboard & Auth Logic
+
+const ADMIN_PIN = "rt03admin"; // Password default admin
 
 document.addEventListener("DOMContentLoaded", () => {
+  checkAuthStatus();
   renderAdminTables();
 });
 
-function switchTab(tabId) {
-  document.querySelectorAll(".admin-tab-btn").forEach((btn) => btn.classList.remove("active"));
+function checkAuthStatus() {
+  const isAuth = sessionStorage.getItem("RT03_ADMIN_AUTH");
+  const loginModal = document.getElementById("login-modal");
+  if (isAuth === "true") {
+    if (loginModal) loginModal.style.display = "none";
+  } else {
+    if (loginModal) loginModal.style.display = "flex";
+  }
+}
+
+function handleLoginSubmit(e) {
+  e.preventDefault();
+  const pass = document.getElementById("admin-pass").value;
+  const errorMsg = document.getElementById("login-error");
+
+  if (pass === ADMIN_PIN) {
+    sessionStorage.setItem("RT03_ADMIN_AUTH", "true");
+    document.getElementById("login-modal").style.display = "none";
+    if (errorMsg) errorMsg.style.display = "none";
+  } else {
+    if (errorMsg) errorMsg.style.display = "block";
+  }
+}
+
+function handleLogout() {
+  sessionStorage.removeItem("RT03_ADMIN_AUTH");
+  checkAuthStatus();
+}
+
+function switchTab(tabId, btnElement) {
+  document.querySelectorAll(".admin-sidebar .menu-item").forEach((btn) => btn.classList.remove("active"));
   document.querySelectorAll(".admin-tab-content").forEach((content) => content.classList.remove("active"));
 
-  if (event && event.currentTarget) {
-    event.currentTarget.classList.add("active");
+  if (btnElement) {
+    btnElement.classList.add("active");
   }
   const targetContent = document.getElementById(tabId);
   if (targetContent) {
@@ -68,7 +100,7 @@ function renderAdminTables() {
       .join("");
   }
 
-  // 3. Render Pengurus Table with Edit & Delete Actions
+  // 3. Render Pengurus Table
   const pengBody = document.getElementById("table-pengurus-body");
   if (pengBody) {
     pengBody.innerHTML = data.pengurus
@@ -173,7 +205,6 @@ function handleDeleteEvent(id) {
   renderAdminTables();
 }
 
-// Logic Kelola Pengurus RT (Tambah, Edit, Hapus)
 function handleAddPengurus(e) {
   e.preventDefault();
   const data = getCMSData();

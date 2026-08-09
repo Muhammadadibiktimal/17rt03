@@ -66,6 +66,10 @@ function renderPortalContent() {
         const isSpesial17 = ev.id === "event-17agustus";
         const badgeClass = isSpesial17 ? "badge-red" : "badge-gold";
 
+        const btnOnClick = isSpesial17 
+          ? `window.location.href='17-agustus.html'` 
+          : `openEventModal('${ev.id}')`;
+
         return `
         <div class="event-card glass-card">
           <div class="event-img">
@@ -78,8 +82,8 @@ function renderPortalContent() {
             <div class="date"><i data-feather="calendar" style="width:14px;"></i> ${ev.date}</div>
             <h3>${ev.title}</h3>
             <p>${ev.description}</p>
-            <button onclick="openEventModal('${ev.id}')" class="${isSpesial17 ? 'btn-primary' : 'btn-secondary'}" style="width: 100%; justify-content: center;">
-              <i data-feather="eye"></i> Lihat Detail Acara
+            <button onclick="${btnOnClick}" class="${isSpesial17 ? 'btn-primary' : 'btn-secondary'}" style="width: 100%; justify-content: center;">
+              <i data-feather="${isSpesial17 ? 'arrow-right' : 'eye'}"></i> ${isSpesial17 ? 'Buka Halaman 17 Agustus' : 'Lihat Detail Acara'}
             </button>
           </div>
         </div>

@@ -43,10 +43,11 @@ const DEFAULT_DATA = {
         location: "Lap. Serbaguna & Pos Ronda RT 03",
         time: "07:30 WIB - Selesai",
         competitions: [
-          { category: "Anak-Anak", items: ["Makan Kerupuk", "Balap Karung Helm", "Masukkan Paku dalam Botol", "Lari Kelereng"] },
-          { category: "Ibu-Ibu", items: ["Joget Balon Pasangan", "Estafet Tepung", "Memasak Nasi Goreng Kreasi"] },
-          { category: "Bapak-Bapak", items: ["Turnamen Catur", "Lomba Domino/Gapsa", "Tarik Tambang Saling Tarik"] },
-          { category: "Remaja", items: ["Mobile Legends Tournament", "E-Sport FIFA", "Pentas Seni Kreatif"] }
+          { category: "KELAS 1 - 3", items: ["Makan biskuit dari jidat", "Masukin sedotan kebotol sambil manyun", "Ambil air pake gelas di jidat", "Pindahin kacang pake sumpit"] },
+          { category: "KELAS 4 - SMP", items: ["Motor GP pake karung", "Estafet sarung", "Nahan ember sambil buka kaos kaki", "Pindahin air pake kain"] },
+          { category: "REMAJA", items: ["Tournament FF / ML", "Estafet Sarung", "Ular tangga jaga balon dibelakang", "Tarik tambang / Pancing kerupuk"] },
+          { category: "IBU - IBU", items: ["Pake kemeja balon", "Voli sarung", "Goyang Bola dalam kardus", "Rebut kursi"] },
+          { category: "BAPAK - BAPAK", items: ["Pake kemeja balon", "Voli sarung", "Rebut kursi", "Tarik Tambang / Pancing kerupuk"] }
         ],
         panitia: [
           { role: "Penanggung Jawab", name: "Ketua RT 03 (Bpk. M. Adib)" },

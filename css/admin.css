@@ -30,6 +30,7 @@ body.admin-body {
   z-index: 999;
   padding: 1.8rem 1.2rem;
   box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
 .admin-sidebar .brand {
@@ -96,6 +97,7 @@ body.admin-body {
   min-height: 100vh;
   box-sizing: border-box;
   width: calc(100% - 260px);
+  transition: all 0.3s ease;
 }
 
 .admin-topbar {
@@ -262,26 +264,73 @@ select.form-control option {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Responsive Sidebar */
+/* Full Responsive Media Query untuk HP / Mobile Device */
 @media (max-width: 900px) {
+  .admin-wrapper {
+    flex-direction: column;
+  }
+
   .admin-sidebar {
-    width: 80px;
-    padding: 1.5rem 0.5rem;
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1rem 1.2rem;
+    flex-direction: row;
+    align-items: center;
   }
-  .admin-sidebar .brand span,
-  .admin-sidebar .menu-item span {
-    display: none;
-  }
+
   .admin-sidebar .brand {
-    justify-content: center;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
   }
+
+  .admin-sidebar .brand span {
+    display: inline;
+  }
+
+  .admin-sidebar .menu-list {
+    flex-direction: row;
+    gap: 0.4rem;
+  }
+
   .admin-sidebar .menu-item {
-    justify-content: center;
-    padding: 0.9rem;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
   }
+
+  .admin-sidebar .menu-item span {
+    display: inline;
+  }
+
+  .admin-sidebar-footer {
+    display: flex;
+    gap: 0.5rem;
+  }
+
   .admin-main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-    padding: 1.5rem;
+    margin-left: 0;
+    width: 100%;
+    padding: 1.5rem 1rem;
+  }
+
+  .admin-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  /* Ubah layout grid 2 kolom form & tabel menjadi 1 kolom vertical di HP */
+  .admin-tab-content > div {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.8rem 0.6rem;
+    font-size: 0.85rem;
   }
 }

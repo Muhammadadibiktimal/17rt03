@@ -221,8 +221,9 @@ function handleAddPengurus(e) {
   const name = document.getElementById("peng-name").value;
   const role = document.getElementById("peng-role").value;
   const phone = document.getElementById("peng-phone").value;
+  const avatar = document.getElementById("peng-avatar") ? document.getElementById("peng-avatar").value : "";
 
-  data.pengurus.push({ name, role, phone, avatar: "" });
+  data.pengurus.push({ name, role, phone, avatar });
   saveCMSData(data);
   document.getElementById("form-pengurus").reset();
   renderAdminTables();
@@ -238,6 +239,9 @@ function openEditPengurusModal(index) {
   document.getElementById("edit-peng-name").value = p.name;
   document.getElementById("edit-peng-role").value = p.role;
   document.getElementById("edit-peng-phone").value = p.phone;
+  if (document.getElementById("edit-peng-avatar")) {
+    document.getElementById("edit-peng-avatar").value = p.avatar || "";
+  }
 
   document.getElementById("edit-pengurus-modal").classList.add("active");
   if (window.feather) feather.replace();
@@ -256,6 +260,9 @@ function handleSaveEditPengurus(e) {
     data.pengurus[index].name = document.getElementById("edit-peng-name").value;
     data.pengurus[index].role = document.getElementById("edit-peng-role").value;
     data.pengurus[index].phone = document.getElementById("edit-peng-phone").value;
+    if (document.getElementById("edit-peng-avatar")) {
+      data.pengurus[index].avatar = document.getElementById("edit-peng-avatar").value;
+    }
 
     saveCMSData(data);
     closeEditPengurusModal();

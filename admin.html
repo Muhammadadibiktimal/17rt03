@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Portal RT 03</title>
+    <title>Admin CMS Dashboard - Portal RT 03</title>
     <link rel="shortcut icon" href="img/logo/logo3.png" type="image/x-icon" />
 
     <!-- Google Fonts -->
@@ -21,19 +21,20 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/admin.css" />
   </head>
-  <body>
+  <body class="admin-body">
+
     <!-- Modal Lock Login Admin -->
     <div id="login-modal" class="login-overlay">
       <div class="login-card glass-card">
-        <div style="width:60px; height:60px; border-radius:50%; background:rgba(233,15,15,0.2); color:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 1rem; font-size:1.5rem;">
+        <div style="width:60px; height:60px; border-radius:50%; background:rgba(233,15,15,0.2); color:var(--primary); display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem; font-size:1.5rem;">
           <i data-feather="lock"></i>
         </div>
-        <h2 style="color:#fff; margin-bottom:0.4rem;">Login Khusus Admin</h2>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">Masukkan PIN / Password Pengurus RT 03</p>
+        <h2 style="color:#fff; margin-bottom:0.4rem;">Login Admin CMS</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.8rem;">Masukkan PIN / Password Pengurus RT 03</p>
         
         <form onsubmit="handleLoginSubmit(event)">
           <div class="form-group">
-            <input type="password" id="admin-pass" class="form-control" placeholder="Password Admin (Default: rt03admin)" required style="text-align:center; font-size:1.1rem; letter-spacing:2px;" />
+            <input type="password" id="admin-pass" class="form-control" placeholder="Password (Default: rt03admin)" required style="text-align:center; font-size:1.1rem; letter-spacing:2px;" />
           </div>
           <p id="login-error" style="color:#ff4d4d; font-size:0.85rem; display:none; margin-bottom:1rem;">Password salah! Silakan coba lagi.</p>
           <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
@@ -41,7 +42,7 @@
           </button>
         </form>
         <div style="margin-top:1.5rem;">
-          <a href="index.html" style="color:var(--text-muted); font-size:0.85rem;"><i data-feather="arrow-left" style="width:14px;"></i> Kembali ke Website Portal</a>
+          <a href="index.html" style="color:var(--text-muted); font-size:0.85rem;"><i data-feather="arrow-left" style="width:14px;"></i> Kembali ke Portal Warga</a>
         </div>
       </div>
     </div>
@@ -52,17 +53,17 @@
       <aside class="admin-sidebar">
         <div>
           <div class="brand">
-            <i data-feather="grid" style="color: var(--primary);"></i> <span>Admin CMS</span>
+            <i data-feather="grid"></i> <span>CMS <span>RT 03</span></span>
           </div>
 
           <nav class="menu-list">
-            <button class="menu-item active" onclick="switchTab('tab-announcements', this)">
+            <button id="btn-tab-announcements" class="menu-item active" onclick="switchAdminTab('tab-announcements', 'btn-tab-announcements')">
               <i data-feather="bell"></i> <span>Pengumuman</span>
             </button>
-            <button class="menu-item" onclick="switchTab('tab-events', this)">
+            <button id="btn-tab-events" class="menu-item" onclick="switchAdminTab('tab-events', 'btn-tab-events')">
               <i data-feather="calendar"></i> <span>Kegiatan Warga</span>
             </button>
-            <button class="menu-item" onclick="switchTab('tab-pengurus', this)">
+            <button id="btn-tab-pengurus" class="menu-item" onclick="switchAdminTab('tab-pengurus', 'btn-tab-pengurus')">
               <i data-feather="users"></i> <span>Pengurus RT</span>
             </button>
           </nav>
@@ -70,10 +71,10 @@
 
         <div>
           <a href="index.html" class="menu-item" style="color: var(--text-muted);">
-            <i data-feather="globe"></i> <span>Lihat Website</span>
+            <i data-feather="globe"></i> <span>Website Portal</span>
           </a>
           <button onclick="handleLogout()" class="menu-item" style="color: var(--primary);">
-            <i data-feather="log-out"></i> <span>Keluar / Logout</span>
+            <i data-feather="log-out"></i> <span>Logout</span>
           </button>
         </div>
       </aside>
@@ -82,8 +83,8 @@
       <main class="admin-main-content">
         <div class="admin-topbar">
           <div>
-            <h1 style="font-size:2rem; color:#fff;">Dashboard Pengelola RT 03</h1>
-            <p style="color:var(--text-muted); font-size:0.9rem;">Kelola konten publikasi portal warga secara aman</p>
+            <h1 style="font-size:2rem; color:#fff; margin-bottom:0.2rem;">Dashboard CMS Pengurus</h1>
+            <p style="color:var(--text-muted); font-size:0.9rem;">Kelola pengumuman, kegiatan warga, dan data pengurus RT 03</p>
           </div>
 
           <button onclick="handleResetData()" class="btn-secondary" style="border-color: rgba(233,15,15,0.4); color: var(--primary); font-size:0.85rem;">
@@ -124,7 +125,7 @@
                   <textarea id="ann-content" class="form-control" placeholder="Tulis rincian pengumuman untuk warga..." required></textarea>
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-                  <i data-feather="save"></i> Publikasikan Pengumuman
+                  <i data-feather="save"></i> Publikasikan
                 </button>
               </form>
             </div>
@@ -155,7 +156,7 @@
           <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
             <!-- Form Tambah Event -->
             <div class="glass-card" style="padding: 1.8rem;">
-              <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Kegiatan / Event</h3>
+              <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Kegiatan</h3>
               <form id="form-event" onsubmit="handleAddEvent(event)">
                 <div class="form-group">
                   <label>Nama Kegiatan</label>
@@ -223,7 +224,7 @@
                   <input type="text" id="peng-phone" class="form-control" placeholder="Contoh: +62 812-3456-7890" required />
                 </div>
                 <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-                  <i data-feather="save"></i> Simpan Data Pengurus
+                  <i data-feather="save"></i> Simpan Pengurus
                 </button>
               </form>
             </div>

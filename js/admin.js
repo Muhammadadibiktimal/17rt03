@@ -36,17 +36,27 @@ function handleLogout() {
   checkAuthStatus();
 }
 
-function switchTab(tabId, btnElement) {
+function switchAdminTab(tabId, btnId) {
+  // Remove active from all buttons & contents
   document.querySelectorAll(".admin-sidebar .menu-item").forEach((btn) => btn.classList.remove("active"));
-  document.querySelectorAll(".admin-tab-content").forEach((content) => content.classList.remove("active"));
+  document.querySelectorAll(".admin-tab-content").forEach((content) => {
+    content.classList.remove("active");
+    content.style.display = "none";
+  });
 
-  if (btnElement) {
-    btnElement.classList.add("active");
+  // Activate selected button
+  const activeBtn = document.getElementById(btnId);
+  if (activeBtn) {
+    activeBtn.classList.add("active");
   }
+
+  // Activate selected content
   const targetContent = document.getElementById(tabId);
   if (targetContent) {
     targetContent.classList.add("active");
+    targetContent.style.display = "block";
   }
+
   if (window.feather) feather.replace();
 }
 

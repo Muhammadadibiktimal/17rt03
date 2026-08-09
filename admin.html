@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin CMS Dashboard - Portal RT 03</title>
+    <link rel="shortcut icon" href="img/logo/logo3.png" type="image/x-icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Feather Icons -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+  </head>
+  <body style="padding-top: 5rem;">
+    <!-- Navbar Start -->
+    <nav class="navbar">
+      <a href="index.html" class="navbar-logo">
+        <i data-feather="grid" style="color: var(--primary);"></i> Admin <span>CMS RT 03</span>
+      </a>
+
+      <div class="navbar-extra">
+        <a href="index.html" class="btn-secondary" style="font-size:0.9rem; padding:0.4rem 1rem;">
+          <i data-feather="arrow-left"></i> Kembali ke Website
+        </a>
+      </div>
+    </nav>
+    <!-- Navbar End -->
+
+    <!-- Main Container -->
+    <div style="padding: 2rem 7%;">
+      <div class="admin-header">
+        <div>
+          <h1 style="font-size:2.2rem; color:#fff;">Dashboard Pengelola CMS</h1>
+          <p style="color:var(--text-muted);">Tambah & Kelola Pengumuman, Kegiatan Warga, serta Dokumentasi RT 03</p>
+        </div>
+        <button onclick="handleResetData()" class="btn-secondary" style="border-color: rgba(233,15,15,0.4); color: var(--primary);">
+          <i data-feather="refresh-cw"></i> Reset ke Data Default
+        </button>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <div class="admin-nav-tabs">
+        <button class="admin-tab-btn active" onclick="switchTab('tab-announcements')">
+          <i data-feather="bell"></i> Kelola Pengumuman
+        </button>
+        <button class="admin-tab-btn" onclick="switchTab('tab-events')">
+          <i data-feather="calendar"></i> Kelola Kegiatan / Events
+        </button>
+        <button class="admin-tab-btn" onclick="switchTab('tab-pengurus')">
+          <i data-feather="users"></i> Data Pengurus RT
+        </button>
+      </div>
+
+      <!-- Tab 1: Pengumuman -->
+      <div id="tab-announcements" class="admin-tab-content active">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+          <!-- Form Tambah Pengumuman -->
+          <div class="glass-card" style="padding: 1.8rem;">
+            <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Pengumuman</h3>
+            <form id="form-announcement" onsubmit="handleAddAnnouncement(event)">
+              <div class="form-group">
+                <label>Judul Pengumuman</label>
+                <input type="text" id="ann-title" class="form-control" placeholder="Contoh: Kerja Bakti RT" required />
+              </div>
+              <div class="form-group">
+                <label>Kategori</label>
+                <select id="ann-category" class="form-control">
+                  <option value="Kegiatan">Kegiatan Warga</option>
+                  <option value="Kesehatan">Kesehatan / Posyandu</option>
+                  <option value="Keuangan">Kas / Keuangan</option>
+                  <option value="Informasi">Informasi Umum</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Status Badge</label>
+                <select id="ann-badge" class="form-control">
+                  <option value="Penting">Penting (Merah)</option>
+                  <option value="Rutin">Rutin (Emas)</option>
+                  <option value="Info">Info (Biru)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Isi Pengumuman</label>
+                <textarea id="ann-content" class="form-control" placeholder="Tulis rincian pengumuman untuk warga..." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                <i data-feather="save"></i> Publikasikan Pengumuman
+              </button>
+            </form>
+          </div>
+
+          <!-- Table List Pengumuman -->
+          <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
+            <h3 style="margin-bottom: 1.2rem;"><i data-feather="list"></i> Daftar Pengumuman Aktif</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Judul</th>
+                  <th>Kategori</th>
+                  <th>Badge</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-announcements-body">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Events / Kegiatan -->
+      <div id="tab-events" class="admin-tab-content">
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+          <!-- Form Tambah Event -->
+          <div class="glass-card" style="padding: 1.8rem;">
+            <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="plus-circle"></i> Tambah Kegiatan / Event</h3>
+            <form id="form-event" onsubmit="handleAddEvent(event)">
+              <div class="form-group">
+                <label>Nama Kegiatan</label>
+                <input type="text" id="ev-title" class="form-control" placeholder="Contoh: Turnamen Bulutangkis RT" required />
+              </div>
+              <div class="form-group">
+                <label>Waktu / Tanggal Pelaksanaan</label>
+                <input type="text" id="ev-date" class="form-control" placeholder="Contoh: 25 Agustus 2026" required />
+              </div>
+              <div class="form-group">
+                <label>Kategori & Badge</label>
+                <select id="ev-badge" class="form-control">
+                  <option value="Event Utama">Event Utama (Highlight)</option>
+                  <option value="Rutin">Kegiatan Rutin</option>
+                  <option value="Olahraga">Olahraga & Seni</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Deskripsi Singkat</label>
+                <textarea id="ev-description" class="form-control" placeholder="Penjelasan singkat mengenai event ini..." required></textarea>
+              </div>
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                <i data-feather="save"></i> Simpan Kegiatan
+              </button>
+            </form>
+          </div>
+
+          <!-- Table List Events -->
+          <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
+            <h3 style="margin-bottom: 1.2rem;"><i data-feather="list"></i> Daftar Kegiatan Warga</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Kegiatan</th>
+                  <th>Tanggal</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-events-body">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 3: Pengurus -->
+      <div id="tab-pengurus" class="admin-tab-content">
+        <div class="glass-card" style="padding: 1.8rem;">
+          <h3 style="margin-bottom: 1.2rem;"><i data-feather="users"></i> Daftar Pengurus RT 03 Saat Ini</h3>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nama Pengurus</th>
+                <th>Jabatan / Role</th>
+                <th>No. Telepon / WhatsApp</th>
+              </tr>
+            </thead>
+            <tbody id="table-pengurus-body">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/cms-data.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+      feather.replace();
+    </script>
+  </body>
+</html>

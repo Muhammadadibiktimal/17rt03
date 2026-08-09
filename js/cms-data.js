@@ -115,9 +115,9 @@ const DEFAULT_DATA = {
 
 // Initialize DB
 function getCMSData() {
-  const local = localStorage.getItem("RT03_CMS_DATA");
+  const local = localStorage.getItem("RT03_CMS_DATA_V2");
   if (!local) {
-    localStorage.setItem("RT03_CMS_DATA", JSON.stringify(DEFAULT_DATA));
+    localStorage.setItem("RT03_CMS_DATA_V2", JSON.stringify(DEFAULT_DATA));
     return DEFAULT_DATA;
   }
   try {
@@ -128,10 +128,10 @@ function getCMSData() {
 }
 
 function saveCMSData(data) {
-  localStorage.setItem("RT03_CMS_DATA", JSON.stringify(data));
+  localStorage.setItem("RT03_CMS_DATA_V2", JSON.stringify(data));
 }
 
 function resetCMSData() {
-  localStorage.setItem("RT03_CMS_DATA", JSON.stringify(DEFAULT_DATA));
+  localStorage.setItem("RT03_CMS_DATA_V2", JSON.stringify(DEFAULT_DATA));
   return DEFAULT_DATA;
 }

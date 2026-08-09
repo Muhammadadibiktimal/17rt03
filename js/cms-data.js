@@ -106,10 +106,10 @@ const DEFAULT_DATA = {
     }
   ],
   pengurus: [
-    { name: "M. Adib Iktimal", role: "Ketua RT 03", phone: "+62 812-3456-7890", avatar: "img/about/IMG-20240716-WA0004.jpg" },
-    { name: "Budi Santoso", role: "Sekretaris RT", phone: "+62 813-9876-5432", avatar: "" },
-    { name: "Ahmad Sujianto", role: "Bendahara RT", phone: "+62 815-1122-3344", avatar: "" },
-    { name: "Rizky Pratama", role: "Ketua Karang Taruna", phone: "+62 878-5566-7788", avatar: "" }
+    { name: "Hamim", role: "Ketua RT 03", phone: "+62 812-3456-7890", avatar: "img/about/IMG-20240716-WA0004.jpg" },
+    { name: "Faqih Mubarok", role: "Ketua Karang Taruna", phone: "+62 813-9876-5432", avatar: "" },
+    { name: "Aisyah", role: "Sekretaris RT", phone: "+62 815-1122-3344", avatar: "" },
+    { name: "Ka Apin", role: "Bendahara RT", phone: "+62 878-5566-7788", avatar: "" }
   ]
 };
 

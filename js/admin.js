@@ -8,7 +8,9 @@ function switchTab(tabId) {
   document.querySelectorAll(".admin-tab-btn").forEach((btn) => btn.classList.remove("active"));
   document.querySelectorAll(".admin-tab-content").forEach((content) => content.classList.remove("active"));
 
-  event.currentTarget.classList.add("active");
+  if (event && event.currentTarget) {
+    event.currentTarget.classList.add("active");
+  }
   const targetContent = document.getElementById(tabId);
   if (targetContent) {
     targetContent.classList.add("active");
@@ -66,16 +68,24 @@ function renderAdminTables() {
       .join("");
   }
 
-  // 3. Render Pengurus Table
+  // 3. Render Pengurus Table with Edit & Delete Actions
   const pengBody = document.getElementById("table-pengurus-body");
   if (pengBody) {
     pengBody.innerHTML = data.pengurus
       .map(
-        (p) => `
+        (p, idx) => `
       <tr>
         <td><strong>${p.name}</strong></td>
         <td>${p.role}</td>
         <td>${p.phone}</td>
+        <td>
+          <button onclick="openEditPengurusModal(${idx})" class="btn-action-sm" style="background:rgba(255,193,7,0.2); color:var(--accent-gold); border:1px solid rgba(255,193,7,0.4);">
+            <i data-feather="edit" style="width:14px;"></i> Edit
+          </button>
+          <button onclick="handleDeletePengurus(${idx})" class="btn-action-sm btn-delete">
+            <i data-feather="trash-2" style="width:14px;"></i> Hapus
+          </button>
+        </td>
       </tr>
     `
       )
@@ -130,7 +140,7 @@ function handleAddEvent(e) {
 
   const newEvent = {
     id: "event-" + Date.now(),
-    slug: title.toLowerCase().replace(/[^a-z0-0]/g, "-"),
+    slug: title.toLowerCase().replace(/[^a-z0-9]/g, "-"),
     title,
     date,
     category: "Kegiatan Warga",
@@ -163,8 +173,67 @@ function handleDeleteEvent(id) {
   renderAdminTables();
 }
 
+// Logic Kelola Pengurus RT (Tambah, Edit, Hapus)
+function handleAddPengurus(e) {
+  e.preventDefault();
+  const data = getCMSData();
+
+  const name = document.getElementById("peng-name").value;
+  const role = document.getElementById("peng-role").value;
+  const phone = document.getElementById("peng-phone").value;
+
+  data.pengurus.push({ name, role, phone, avatar: "" });
+  saveCMSData(data);
+  document.getElementById("form-pengurus").reset();
+  renderAdminTables();
+  alert("Pengurus RT berhasil ditambahkan!");
+}
+
+function openEditPengurusModal(index) {
+  const data = getCMSData();
+  const p = data.pengurus[index];
+  if (!p) return;
+
+  document.getElementById("edit-peng-index").value = index;
+  document.getElementById("edit-peng-name").value = p.name;
+  document.getElementById("edit-peng-role").value = p.role;
+  document.getElementById("edit-peng-phone").value = p.phone;
+
+  document.getElementById("edit-pengurus-modal").classList.add("active");
+  if (window.feather) feather.replace();
+}
+
+function closeEditPengurusModal() {
+  document.getElementById("edit-pengurus-modal").classList.remove("active");
+}
+
+function handleSaveEditPengurus(e) {
+  e.preventDefault();
+  const data = getCMSData();
+  const index = document.getElementById("edit-peng-index").value;
+
+  if (index !== "" && data.pengurus[index]) {
+    data.pengurus[index].name = document.getElementById("edit-peng-name").value;
+    data.pengurus[index].role = document.getElementById("edit-peng-role").value;
+    data.pengurus[index].phone = document.getElementById("edit-peng-phone").value;
+
+    saveCMSData(data);
+    closeEditPengurusModal();
+    renderAdminTables();
+    alert("Data pengurus RT berhasil diperbarui!");
+  }
+}
+
+function handleDeletePengurus(index) {
+  if (!confirm("Apakah Anda yakin ingin menghapus pengurus ini?")) return;
+  const data = getCMSData();
+  data.pengurus.splice(index, 1);
+  saveCMSData(data);
+  renderAdminTables();
+}
+
 function handleResetData() {
-  if (confirm("Reset data akan mengembalikan semua pengumuman & kegiatan ke pengaturan awal. Lanjutkan?")) {
+  if (confirm("Reset data akan mengembalikan semua data ke pengaturan awal. Lanjutkan?")) {
     resetCMSData();
     renderAdminTables();
     alert("Data berhasil di-reset ke default!");

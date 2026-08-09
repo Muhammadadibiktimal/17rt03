@@ -41,7 +41,7 @@
       <div class="admin-header">
         <div>
           <h1 style="font-size:2.2rem; color:#fff;">Dashboard Pengelola CMS</h1>
-          <p style="color:var(--text-muted);">Tambah & Kelola Pengumuman, Kegiatan Warga, serta Dokumentasi RT 03</p>
+          <p style="color:var(--text-muted);">Tambah & Kelola Pengumuman, Kegiatan Warga, Pengurus RT, serta Dokumentasi RT 03</p>
         </div>
         <button onclick="handleResetData()" class="btn-secondary" style="border-color: rgba(233,15,15,0.4); color: var(--primary);">
           <i data-feather="refresh-cw"></i> Reset ke Data Default
@@ -57,7 +57,7 @@
           <i data-feather="calendar"></i> Kelola Kegiatan / Events
         </button>
         <button class="admin-tab-btn" onclick="switchTab('tab-pengurus')">
-          <i data-feather="users"></i> Data Pengurus RT
+          <i data-feather="users"></i> Kelola Pengurus RT
         </button>
       </div>
 
@@ -173,25 +173,77 @@
         </div>
       </div>
 
-      <!-- Tab 3: Pengurus -->
+      <!-- Tab 3: Pengurus RT -->
       <div id="tab-pengurus" class="admin-tab-content">
-        <div class="glass-card" style="padding: 1.8rem;">
-          <h3 style="margin-bottom: 1.2rem;"><i data-feather="users"></i> Daftar Pengurus RT 03 Saat Ini</h3>
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Nama Pengurus</th>
-                <th>Jabatan / Role</th>
-                <th>No. Telepon / WhatsApp</th>
-              </tr>
-            </thead>
-            <tbody id="table-pengurus-body">
-              <!-- Rendered dynamically -->
-            </tbody>
-          </table>
+        <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+          <!-- Form Tambah / Edit Pengurus -->
+          <div class="glass-card" style="padding: 1.8rem;">
+            <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="user-plus"></i> Tambah Pengurus RT</h3>
+            <form id="form-pengurus" onsubmit="handleAddPengurus(event)">
+              <div class="form-group">
+                <label>Nama Lengkap</label>
+                <input type="text" id="peng-name" class="form-control" placeholder="Contoh: H. Ahmad Subagyo" required />
+              </div>
+              <div class="form-group">
+                <label>Jabatan / Role</label>
+                <input type="text" id="peng-role" class="form-control" placeholder="Contoh: Ketua RT 03 / Bendahara" required />
+              </div>
+              <div class="form-group">
+                <label>No. Telepon / WhatsApp</label>
+                <input type="text" id="peng-phone" class="form-control" placeholder="Contoh: +62 812-3456-7890" required />
+              </div>
+              <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                <i data-feather="save"></i> Simpan Data Pengurus
+              </button>
+            </form>
+          </div>
+
+          <!-- Table List Pengurus -->
+          <div class="glass-card" style="padding: 1.8rem; overflow-x: auto;">
+            <h3 style="margin-bottom: 1.2rem;"><i data-feather="users"></i> Data Pengurus RT 03</h3>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nama Pengurus</th>
+                  <th>Jabatan / Role</th>
+                  <th>No. Telepon</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="table-pengurus-body">
+                <!-- Rendered dynamically -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
+    </div>
+
+    <!-- Modal Edit Pengurus -->
+    <div class="modal" id="edit-pengurus-modal">
+      <div class="modal-content glass-card" style="max-width: 500px;">
+        <span class="modal-close" onclick="closeEditPengurusModal()"><i data-feather="x"></i></span>
+        <h3 style="margin-bottom: 1.2rem; color: var(--accent-gold);"><i data-feather="edit"></i> Edit Data Pengurus RT</h3>
+        <form id="form-edit-pengurus" onsubmit="handleSaveEditPengurus(event)">
+          <input type="hidden" id="edit-peng-index" />
+          <div class="form-group">
+            <label>Nama Lengkap</label>
+            <input type="text" id="edit-peng-name" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>Jabatan / Role</label>
+            <input type="text" id="edit-peng-role" class="form-control" required />
+          </div>
+          <div class="form-group">
+            <label>No. Telepon / WhatsApp</label>
+            <input type="text" id="edit-peng-phone" class="form-control" required />
+          </div>
+          <button type="submit" class="btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
+            <i data-feather="check-circle"></i> Simpan Perubahan
+          </button>
+        </form>
+      </div>
     </div>
 
     <!-- Scripts -->

@@ -37,20 +37,17 @@ function handleLogout() {
 }
 
 function switchAdminTab(tabId, btnId) {
-  // Remove active from all buttons & contents
   document.querySelectorAll(".admin-sidebar .menu-item").forEach((btn) => btn.classList.remove("active"));
   document.querySelectorAll(".admin-tab-content").forEach((content) => {
     content.classList.remove("active");
     content.style.display = "none";
   });
 
-  // Activate selected button
   const activeBtn = document.getElementById(btnId);
   if (activeBtn) {
     activeBtn.classList.add("active");
   }
 
-  // Activate selected content
   const targetContent = document.getElementById(tabId);
   if (targetContent) {
     targetContent.classList.add("active");
@@ -75,7 +72,7 @@ function renderAdminTables() {
         <td><span class="badge ${ann.badge === 'Penting' ? 'badge-red' : 'badge-gold'}">${ann.badge}</span></td>
         <td>${ann.date}</td>
         <td>
-          <button onclick="handleDeleteAnnouncement('${ann.id}')" class="btn-action-sm btn-delete">
+          <button onclick="handleDeleteAnnouncement('${ann.id}')" class="btn-action-sm btn-delete-styled">
             <i data-feather="trash-2" style="width:14px;"></i> Hapus
           </button>
         </td>
@@ -98,8 +95,8 @@ function renderAdminTables() {
         <td>
           ${
             ev.id === "event-17agustus"
-              ? `<span style="font-size:0.8rem; color:var(--accent-gold);">System Event</span>`
-              : `<button onclick="handleDeleteEvent('${ev.id}')" class="btn-action-sm btn-delete">
+              ? `<span style="font-size:0.8rem; color:var(--accent-gold); font-weight:600;">System Event</span>`
+              : `<button onclick="handleDeleteEvent('${ev.id}')" class="btn-action-sm btn-delete-styled">
                   <i data-feather="trash-2" style="width:14px;"></i> Hapus
                 </button>`
           }
@@ -110,7 +107,7 @@ function renderAdminTables() {
       .join("");
   }
 
-  // 3. Render Pengurus Table
+  // 3. Render Pengurus Table (Dengan Tombol Edit & Hapus Keren)
   const pengBody = document.getElementById("table-pengurus-body");
   if (pengBody) {
     pengBody.innerHTML = data.pengurus
@@ -118,15 +115,17 @@ function renderAdminTables() {
         (p, idx) => `
       <tr>
         <td><strong>${p.name}</strong></td>
-        <td>${p.role}</td>
+        <td><span class="badge badge-blue">${p.role}</span></td>
         <td>${p.phone}</td>
         <td>
-          <button onclick="openEditPengurusModal(${idx})" class="btn-action-sm" style="background:rgba(255,193,7,0.2); color:var(--accent-gold); border:1px solid rgba(255,193,7,0.4);">
-            <i data-feather="edit" style="width:14px;"></i> Edit
-          </button>
-          <button onclick="handleDeletePengurus(${idx})" class="btn-action-sm btn-delete">
-            <i data-feather="trash-2" style="width:14px;"></i> Hapus
-          </button>
+          <div style="display:flex; gap:0.5rem;">
+            <button onclick="openEditPengurusModal(${idx})" class="btn-action-sm btn-edit-styled">
+              <i data-feather="edit-2" style="width:14px;"></i> Edit
+            </button>
+            <button onclick="handleDeletePengurus(${idx})" class="btn-action-sm btn-delete-styled">
+              <i data-feather="trash-2" style="width:14px;"></i> Hapus
+            </button>
+          </div>
         </td>
       </tr>
     `
